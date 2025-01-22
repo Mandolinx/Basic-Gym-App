@@ -1,0 +1,137 @@
+:root{
+    --blue: #1480cc;
+    --light-blue: #86cbfc;
+}
+
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+h1{
+    margin: 2rem 0 2rem 2rem;
+}
+
+.main {
+    max-width: 500px; /* Limit the width of the main container */
+    margin: 0 auto; /* Center the container horizontally */
+    height: 100%;
+    background-color: white;
+    border: 1px solid black;
+}
+
+.top-bar {
+    position: sticky;
+    display: block;
+    top: 0; /* Stick to the top of the .main container */
+    left: 0;
+    z-index: 10; /* Ensure it stays above other content */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%; /* Matches the width of the parent container */
+    height: 10vh;
+    padding: 0 15px;
+    box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+    user-select: none; /* Standard syntax */
+    background-color: white;
+    overflow:hidden;
+
+}
+
+.top-bar img {
+    height: 24px; /* Ensure consistent height for the image */
+    cursor: pointer;
+}
+
+.top-bar > *{
+    cursor: pointer;
+
+}
+
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr; /* Define grid columns for both headers and rows */
+    gap: 10px;
+    margin: 30px auto; /* Center the container */
+    text-align: center;
+}
+
+.exercise-header {
+    display: contents; /* Allows the header to participate in the same grid as the rows */
+}
+
+.set {
+    display: contents; /* Allows rows to share the grid structure */
+}
+
+.header {
+    font-weight: 350;
+    padding-bottom: 10px;
+}
+
+.row {
+    line-height: 2rem;
+}
+
+input {
+    text-align: center; /* Center the text */
+    box-sizing: border-box; /* Include padding and borders in width calculations */
+    width: 100%; /* Force the input to take up all the space of its container */
+    max-width: 100%; /* Prevent overflow beyond the container */
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    appearance: auto; /* Keep the spinner buttons */
+}
+
+input[type="checkbox"]{
+    width: 100%;
+    margin: 0;
+}
+
+.exercise h3{
+    margin-left: 20px;
+    margin-top: 50px;
+    color: var(--blue);
+}
+
+
+
+
+.interactive-text{
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--blue);
+    height: 100%;
+    display: flex; /* Use flexbox for vertical alignment */
+    align-items: center; /* Vertically center the text */
+    padding: 0 20px;
+    margin-right: -20px;
+}
+
+.interactive-text:hover, button:hover{
+    background-color: var(--light-blue);
+}
+
+#exit-workout {
+    display: block; /* Ensures the button behaves like a block element */
+    margin: 20px auto; /* Centers the button horizontally and adds vertical margins */
+    text-align: center; /* Centers text inside the button */
+}
+
+button{
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--blue);
+    height: 2rem;
+    padding: 0 20px;
+    background: none;
+    border-color: var(--blue)
+}
+
+
