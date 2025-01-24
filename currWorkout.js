@@ -23,22 +23,37 @@ if (!exerciseEl) {
 }
 
 function setupListeners(workouts) {
-    onValue(workouts, function(snapshot) {
-        if (snapshot.exists()) {
-            let itemsArr = Object.entries(snapshot.val());
 
-            // Assuming we're processing only the first workout for now
-            let currentItem = itemsArr[0];
-            let exercises = Object.entries(currentItem[1]);
+
+    onValue(workouts, function(snapshot) {
+
+        const selectedWorkout = localStorage.getItem("selectedWorkout");
+        if (!selectedWorkout) {
+            console.error("No workout selected in localStorage!");
+            return;
+        }
+        
+        if (snapshot.exists()) {
+            const data = snapshot.val(); // Get the entire workouts object from Firebase
+            const currentItem = data[selectedWorkout]; // Use selectedWorkout as the key
+        
+            if (!currentItem) {
+                console.error(`No workout data found for key: ${selectedWorkout}`);
+                return;
+            }
+        
+            console.log(`Current workout data for ${selectedWorkout}:`, currentItem);
+        
+            const exercises = Object.entries(currentItem); // Convert the exercises to an array of key-value pairs
             clearExercises(); // Clear previous exercises
             exercises.forEach(([exerciseName, exerciseDetails]) => {
-                addExercises(exerciseName, exerciseDetails);
+                addExercises(exerciseName, exerciseDetails); // Add each exercise to the UI
             });
         } else {
             console.log("No data from realtime database");
         }
     });
-}
+}   
 
 function formatCamelCase(str) {
     const spacedString = str.replace(/([A-Z])/g, " $1");

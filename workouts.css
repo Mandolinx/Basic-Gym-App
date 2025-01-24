@@ -11,4 +11,6 @@
     border-radius: 3px;
     margin: 10px 0;
     padding: 0 10px;
+    text-decoration: none; /* Remove underlines */
+    color: inherit; /* Use the color of the parent element */
 }

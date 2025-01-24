@@ -13,9 +13,15 @@ h1{
     margin: 2rem 0 2rem 2rem;
 }
 
+h1, h2, h3 {
+    color: var(--blue);
+}
+
+
 .main {
     max-width: 500px; /* Limit the width of the main container */
     margin: 0 auto; /* Center the container horizontally */
+    min-height: 100vh;
     height: 100%;
     background-color: white;
     border: 1px solid black;
@@ -46,7 +52,7 @@ h1{
     cursor: pointer;
 }
 
-.top-bar > *{
+.top-bar > *, button, input[type="checkbox"]{
     cursor: pointer;
 
 }
@@ -132,6 +138,7 @@ button{
     padding: 0 20px;
     background: none;
     border-color: var(--blue)
+    
 }
 
 
