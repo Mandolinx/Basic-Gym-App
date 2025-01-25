@@ -24,35 +24,33 @@ if (!exerciseEl) {
 
 function setupListeners(workouts) {
 
-
-    onValue(workouts, function(snapshot) {
-
-        const selectedWorkout = localStorage.getItem("selectedWorkout");
-        if (!selectedWorkout) {
-            console.error("No workout selected in localStorage!");
-            return;
-        }
-        
+    const selectedWorkout = localStorage.getItem("selectedWorkout");
+    if (!selectedWorkout) {
+        console.error("No workout selected in localStorage!");
+        return;
+    }
+    
+    onValue(workouts, (snapshot) => {
         if (snapshot.exists()) {
-            const data = snapshot.val(); // Get the entire workouts object from Firebase
-            const currentItem = data[selectedWorkout]; // Use selectedWorkout as the key
-        
-            if (!currentItem) {
-                console.error(`No workout data found for key: ${selectedWorkout}`);
+            const data = snapshot.val(); // Get the workouts array
+            const currentWorkout = data.workouts.find(workout => workout.name === selectedWorkout); // Find selected workout
+    
+            if (!currentWorkout) {
+                console.error(`No data found for workout: ${selectedWorkout}`);
                 return;
             }
-        
-            console.log(`Current workout data for ${selectedWorkout}:`, currentItem);
-        
-            const exercises = Object.entries(currentItem); // Convert the exercises to an array of key-value pairs
-            clearExercises(); // Clear previous exercises
-            exercises.forEach(([exerciseName, exerciseDetails]) => {
-                addExercises(exerciseName, exerciseDetails); // Add each exercise to the UI
+    
+            console.log(`Exercises for ${selectedWorkout}:`, currentWorkout.exercises);
+    
+            clearExercises(); // Clear any existing exercises in the UI
+            currentWorkout.exercises.forEach((exercise) => {
+                addExercises(exercise.name, exercise); // Add each exercise
             });
         } else {
-            console.log("No data from realtime database");
+            console.log("No data found in database");
         }
     });
+    
 }   
 
 function formatCamelCase(str) {
@@ -64,7 +62,7 @@ function formatCamelCase(str) {
         .join(" ");
 }
 
-function addExercises(exerciseName, exerciseDetails) {
+const addExercises = (exerciseName, exerciseDetails) => {
     const exerciseHTML = `
         <div class="exercise-section">
             <h3>${formatCamelCase(exerciseName)}</h3>
@@ -95,8 +93,44 @@ function addExercises(exerciseName, exerciseDetails) {
         `;
         gridContainer.innerHTML += setDetails;
     }
-}
+};
 
 function clearExercises() {
     exerciseEl.innerHTML = "";
 }
+
+function timer() {
+    const timerEl = document.querySelector(".top-bar p");
+    let sec = 0;
+    let minute = 0;
+    let hour = 0;
+
+    setInterval(() => {
+        sec += 1;
+
+        // Handle minute and hour increments
+        if (sec >= 60) {
+            sec = 0;
+            minute++;
+        }
+        if (minute >= 60) {
+            minute = 0;
+            hour++;
+        }
+        if (hour >= 99) {
+            return; // Stop the timer if hours exceed 99
+        }
+
+        // Format time to always show two digits
+        const formattedTime = [
+            hour.toString().padStart(2, '0'),
+            minute.toString().padStart(2, '0'),
+            sec.toString().padStart(2, '0')
+        ].join(':');
+
+        timerEl.textContent = formattedTime;
+    }, 1000);
+}
+
+// Start the timer
+timer();

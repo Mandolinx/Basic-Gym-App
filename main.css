@@ -44,7 +44,15 @@ h1, h2, h3 {
     user-select: none; /* Standard syntax */
     background-color: white;
     overflow:hidden;
+}
 
+.top-bar p {
+    position: absolute; /* Take it out of the flex grid flow */
+    left: 50%; /* Center horizontally */
+    top: 50%; /* Center vertically */
+    transform: translate(-50%, -50%); /* Offset for perfect centering */
+    text-align: center;
+    margin: 0; /* Remove default margin */
 }
 
 .top-bar img {

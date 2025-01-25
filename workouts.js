@@ -23,19 +23,18 @@ if (!templateEl) {
 }
 
 function setupListeners(workouts) {
-    onValue(workouts, function(snapshot) {
+    onValue(workouts, (snapshot) => {
         if (snapshot.exists()) {
-            let itemsArr = Object.entries(snapshot.val());
-            console.log(itemsArr)
-            // Assuming we're processing only the first workout for now
-            for (let key in itemsArr){
-                const workoutName = itemsArr[key][0];
-                const workoutDetails = itemsArr[key][1];
-                console.log(workoutDetails)
-                addWorkouts(workoutName, workoutDetails);
-            };
+            const data = snapshot.val().workouts; // Get the workouts array
+            console.log("Workouts:", data);
+    
+            // Clear the UI and display each workout
+            templateEl.innerHTML = "";
+            data.forEach((workout) => {
+                addWorkouts(workout.name, workout.exercises); // Pass workout name and its exercises
+            });
         } else {
-            console.log("No data from realtime database");
+            console.log("No data found in database");
         }
     });
 }
@@ -49,39 +48,40 @@ function formatCamelCase(str) {
         .join(" ");
 }
 
-function addWorkouts(workoutName, workoutDetails) {
-    // Use insertAdjacentHTML to append new workout links
+function addWorkouts(workoutName, exercises) {
+    // Add the workout section to the template
     templateEl.insertAdjacentHTML(
         "beforeend",
         `
-        <a href="currWorkout.html" class="workout">
+        <div class="workout">
             <h3>${formatCamelCase(workoutName)}</h3>
-        </a>
+        </div>
         `
     );
 
-    // Select the newly added workout element
+    // Get the last added workout element
     const workoutEls = templateEl.querySelectorAll(".workout");
-    const workoutEl = workoutEls[workoutEls.length - 1]; // Get the last added workout element
+    const workoutEl = workoutEls[workoutEls.length - 1]; // Last added workout
 
-    // Attach event listener to the new workout
-    workoutEl.addEventListener("click", (event) => {
-        event.preventDefault(); // Prevent default link navigation
-        localStorage.setItem("selectedWorkout", workoutName);
-        console.log(`Workout '${workoutName}' stored in localStorage`);
-        window.location.href = workoutEl.getAttribute("href"); // Manually navigate to the link
-    });
-
-    // Add workout details dynamically
-    for (let key in workoutDetails) {
+    // Add exercises dynamically
+    exercises.forEach((exercise) => {
         workoutEl.insertAdjacentHTML(
             "beforeend",
             `
-            <p>${workoutDetails[key].sets} x ${formatCamelCase(key)}</p>
+            <p>${exercise.sets} x ${formatCamelCase(exercise.name)}</p>
             `
         );
-    }
+    });
+
+    // Attach event listener for storing the selected workout in localStorage
+    workoutEl.addEventListener("click", (event) => {
+        event.preventDefault(); // Prevent default behavior
+        localStorage.setItem("selectedWorkout", workoutName); // Store the selected workout
+        console.log(`Workout '${workoutName}' stored in localStorage`);
+        window.location.href = "currWorkout.html"; // Redirect to currWorkout page
+    });
 }
+
 
 
 function addExercises(exerciseName, exerciseDetails) {
