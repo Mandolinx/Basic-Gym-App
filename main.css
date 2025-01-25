@@ -1,152 +1,197 @@
-:root{
+:root {
+    /* Color Variables */
     --blue: #1480cc;
     --light-blue: #86cbfc;
+    --grey: #5e5e5e;
 }
 
+/* Global Styles */
 body {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-family: Helvetica, Geneva, Tahoma, sans-serif;
     margin: 0;
     padding: 0;
 }
 
-h1{
-    margin: 2rem 0 2rem 2rem;
-}
-
+/* Headings */
 h1, h2, h3 {
     color: var(--blue);
 }
 
+h1 {
+    margin: 2rem 0 2rem 2rem;
+}
 
+/* Main Container */
 .main {
     max-width: 500px; /* Limit the width of the main container */
     margin: 0 auto; /* Center the container horizontally */
     min-height: 100vh;
     height: 100%;
     background-color: white;
-    border: 1px solid black;
+    justify-content: center;
 }
 
+@media (max-width: 500px) {
+    .main {
+        width: 100%; /* Make full width on smaller screens */
+    }
+}
+
+/* Top Bar */
 .top-bar {
     position: sticky;
-    display: block;
-    top: 0; /* Stick to the top of the .main container */
-    left: 0;
-    z-index: 10; /* Ensure it stays above other content */
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100%; /* Matches the width of the parent container */
-    height: 10vh;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    width: 100%;
+    height: 5vh;
     padding: 0 15px;
+    background-color: white;
     box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.3);
     box-sizing: border-box;
-    user-select: none; /* Standard syntax */
-    background-color: white;
-    overflow:hidden;
+    overflow: hidden;
+    user-select: none;
 }
 
 .top-bar p {
-    position: absolute; /* Take it out of the flex grid flow */
+    position: absolute;
     left: 50%; /* Center horizontally */
     top: 50%; /* Center vertically */
-    transform: translate(-50%, -50%); /* Offset for perfect centering */
+    transform: translate(-50%, -50%);
     text-align: center;
-    margin: 0; /* Remove default margin */
+    margin: 0;
 }
 
 .top-bar img {
-    height: 24px; /* Ensure consistent height for the image */
+    height: 24px;
     cursor: pointer;
 }
 
-.top-bar > *, button, input[type="checkbox"]{
+.top-bar > *, button, input[type="checkbox"] {
     cursor: pointer;
-
 }
 
-
+/* Grid Container */
 .grid-container {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr; /* Define grid columns for both headers and rows */
+    grid-template-columns: 0.5fr 2fr 1fr 1fr 1fr; /* Define column sizes */
     gap: 10px;
-    margin: 30px auto; /* Center the container */
+    margin: 30px 10px;
     text-align: center;
-}
-
-.exercise-header {
-    display: contents; /* Allows the header to participate in the same grid as the rows */
+    align-items: center; /* Vertically align content within the cells */
 }
 
 .set {
-    display: contents; /* Allows rows to share the grid structure */
+    display: contents;
 }
 
-.header {
-    font-weight: 350;
-    padding-bottom: 10px;
-}
-
+/* Row Elements */
 .row {
     line-height: 2rem;
+    font-size: 14px;
+    color: var(--grey);
 }
 
+/* Input Fields */
 input {
-    text-align: center; /* Center the text */
-    box-sizing: border-box; /* Include padding and borders in width calculations */
-    width: 100%; /* Force the input to take up all the space of its container */
-    max-width: 100%; /* Prevent overflow beyond the container */
+    text-align: center;
+    box-sizing: border-box;
+    width: 100%; /* Ensure uniform width */
+    max-width: 80px; /* Limit input size */
+    height: 2rem; /* Uniform height */
+    padding: 2px;
+    font-size: 14px;
 }
 
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
-    appearance: auto; /* Keep the spinner buttons */
+    appearance: auto; /* Keep spinner buttons */
 }
 
-input[type="checkbox"]{
+input[type="checkbox"] {
     width: 100%;
-    margin: 0;
+    height: 100%;
+    margin: 0 auto; /* Center checkboxes */
 }
 
-.exercise h3{
+/* Exercise Header */
+.exercise-header {
+    display: contents;
+}
+
+.header {
+    font-weight: 300;
+    font-size: 14px;
+    text-transform: uppercase;
+    padding-bottom: 10px;
+}
+
+/* Exercise Section */
+.exercise h3 {
     margin-left: 20px;
     margin-top: 50px;
     color: var(--blue);
 }
 
-
-
-
-.interactive-text{
+/* Interactive Text */
+.interactive-text {
     font-size: 16px;
     font-weight: 300;
     color: var(--blue);
     height: 100%;
-    display: flex; /* Use flexbox for vertical alignment */
-    align-items: center; /* Vertically center the text */
+    display: flex;
+    align-items: center; /* Vertically align text */
     padding: 0 20px;
     margin-right: -20px;
 }
 
-.interactive-text:hover, button:hover{
+.interactive-text:hover,
+button:hover {
     background-color: var(--light-blue);
 }
 
+/* Exit Workout Button */
 #exit-workout {
-    display: block; /* Ensures the button behaves like a block element */
-    margin: 20px auto; /* Centers the button horizontally and adds vertical margins */
-    text-align: center; /* Centers text inside the button */
+    display: block;
+    margin: 20px auto; /* Center horizontally */
+    text-align: center; /* Center text inside the button */
 }
 
-button{
+/* Buttons */
+button {
+    display: block;
+    margin: 10px auto;
+    padding: 10px 20px;
     font-size: 16px;
-    font-weight: 300;
+    font-weight: 500;
     color: var(--blue);
-    height: 2rem;
-    padding: 0 20px;
-    background: none;
-    border-color: var(--blue)
-    
+    text-align: center;
+    background-color: white;
+    border: 3px solid var(--blue);
+    cursor: pointer;
+    border-radius: 5px;
 }
 
+button.add-set {
+    all: unset; /* Reset inherited styles */
+    display: block;
+    margin: 10px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--blue);
+    text-align: center;
+    background-color: white;
+    border: 1px solid var(--blue);
+    cursor: pointer;
+    border-radius: 5px;
+}
 
+/* Template */
+.template {
+    color: var(--grey);
+    cursor: pointer;
+}

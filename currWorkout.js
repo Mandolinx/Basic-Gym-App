@@ -68,32 +68,74 @@ const addExercises = (exerciseName, exerciseDetails) => {
             <h3>${formatCamelCase(exerciseName)}</h3>
             <div class="grid-container">
                 <div class="exercise-header">
-                    <span class="header">Set</span>
+                    <span class="header">SET</span>
+                    <span class="header">PREVIOUS</span>
                     <span class="header">KG</span>
                     <span class="header">REPS</span>
                     <span></span>
                 </div>
             </div>
+            <button class="add-set">ADD SET</button>
         </div>
     `;
 
     // Append the new exercise section
-    exerciseEl.innerHTML += exerciseHTML;
+    exerciseEl.insertAdjacentHTML('beforeend', exerciseHTML);
 
-    // Add sets dynamically
-    const gridContainer = exerciseEl.querySelector(".exercise-section:last-child .grid-container");
+    // Add sets dynamically to the latest exercise section
+    const exerciseSection = exerciseEl.querySelector(".exercise-section:last-child");
+    const gridContainer = exerciseSection.querySelector(".grid-container");
+    const addSetButton = exerciseSection.querySelector(".add-set");
+
+    // Populate initial sets
     for (let i = 0; i < exerciseDetails.sets; i++) {
         const setDetails = `
             <div class="set">
-                <span class="row">${i + 1}</span>
+                <span class="set-num row">${i + 1}</span>
+                <span class="row">${exerciseDetails['weight']}kg x ${exerciseDetails['reps']}</span>
                 <input type="number" min="0" value="${exerciseDetails['weight']}">
                 <input type="number" min="0" step="1" value="${exerciseDetails['reps']}">
                 <input type="checkbox" value="exercise-${i + 1}-done">
             </div>
         `;
-        gridContainer.innerHTML += setDetails;
+        gridContainer.insertAdjacentHTML('beforeend', setDetails);
     }
+    gridContainer.addEventListener("click", (e) => {
+        if (e.target.classList.contains("set-num")) {
+            const setEl = e.target.closest(".set");
+            if (setEl) {
+                setEl.remove();
+            }
+        }
+    });
+
+    // Add event listener to the ADD SET button
+    addSetButton.addEventListener("click", () => {
+        // Count current sets in this specific exercise section
+        const currentSetCount = gridContainer.querySelectorAll(".set").length;
+
+        // Create a new set row
+        const newSetDetails = `
+            <div class="set">
+                <span class="set-num row">${currentSetCount + 1}</span>
+                <span class="row">${exerciseDetails['weight']}kg x ${exerciseDetails['reps']}</span>
+                <input type="number" min="0" value="${exerciseDetails['weight']}">
+                <input type="number" min="0" step="1" value="${exerciseDetails['reps']}">
+                <input type="checkbox" value="exercise-${currentSetCount + 1}-done">
+            </div>  
+        `;
+
+        // Append the new set to the grid container
+        gridContainer.insertAdjacentHTML('beforeend', newSetDetails);
+
+    });
+
 };
+
+
+
+
+
 
 function clearExercises() {
     exerciseEl.innerHTML = "";

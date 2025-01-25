@@ -25,12 +25,12 @@ if (!templateEl) {
 function setupListeners(workouts) {
     onValue(workouts, (snapshot) => {
         if (snapshot.exists()) {
-            const data = snapshot.val().workouts; // Get the workouts array
+            const data = snapshot.val(); // Get the workouts array
             console.log("Workouts:", data);
     
             // Clear the UI and display each workout
             templateEl.innerHTML = "";
-            data.forEach((workout) => {
+            data.workouts.forEach((workout) => {
                 addWorkouts(workout.name, workout.exercises); // Pass workout name and its exercises
             });
         } else {
