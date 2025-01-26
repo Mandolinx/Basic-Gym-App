@@ -88,26 +88,42 @@ const addExercises = (exerciseName, exerciseDetails) => {
     const addSetButton = exerciseSection.querySelector(".add-set");
 
     // Populate initial sets
-    for (let i = 0; i < exerciseDetails.sets; i++) {
-        const setDetails = `
-            <div class="set">
-                <span class="set-num row">${i + 1}</span>
-                <span class="row">${exerciseDetails['weight']}kg x ${exerciseDetails['reps']}</span>
-                <input type="number" min="0" value="${exerciseDetails['weight']}">
-                <input type="number" min="0" step="1" value="${exerciseDetails['reps']}">
-                <input type="checkbox" value="exercise-${i + 1}-done">
-            </div>
-        `;
-        gridContainer.insertAdjacentHTML('beforeend', setDetails);
+    function populateSets(setAmount) {
+        for (let i = 0; i < setAmount; i++) {
+            const setDetails = `
+                <div class="set">
+                    <span class="set-num row">${i + 1}</span>
+                    <span class="row">${exerciseDetails['weight']}kg x ${exerciseDetails['reps']}</span>
+                    <input type="number" min="0" value="${exerciseDetails['weight']}">
+                    <input type="number" min="0" step="1" value="${exerciseDetails['reps']}">
+                    <input type="checkbox" value="exercise-${i + 1}-done">
+                </div>
+            `;
+            gridContainer.insertAdjacentHTML('beforeend', setDetails);
+        }
     }
+    
+    // Initial population of sets
+    populateSets(exerciseDetails.sets);
+    
     gridContainer.addEventListener("click", (e) => {
         if (e.target.classList.contains("set-num")) {
-            const setEl = e.target.closest(".set");
-            if (setEl) {
-                setEl.remove();
-            }
+            // Find the clicked set
+            const clickedSet = e.target.closest(".set");
+    
+            // Remove the clicked set from the DOM
+            clickedSet.remove();
+    
+            // Update the ordering of the remaining sets
+            const remainingSets = gridContainer.querySelectorAll(".set");
+            remainingSets.forEach((set, index) => {
+                // Update the set-num value to reflect the new order
+                const setNumElement = set.querySelector(".set-num");
+                setNumElement.textContent = index + 1; // Reassign based on new index
+            });
         }
     });
+    
 
     // Add event listener to the ADD SET button
     addSetButton.addEventListener("click", () => {
@@ -132,10 +148,7 @@ const addExercises = (exerciseName, exerciseDetails) => {
 
 };
 
-
-
-
-
+// const update
 
 function clearExercises() {
     exerciseEl.innerHTML = "";

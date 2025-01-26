@@ -88,6 +88,15 @@ h1 {
     display: contents;
 }
 
+.set-num:hover {
+    background-color: #bd554d;
+    color: white;
+}
+
+.set-num{
+    user-select: none;
+}
+
 /* Row Elements */
 .row {
     line-height: 2rem;

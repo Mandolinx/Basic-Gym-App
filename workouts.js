@@ -83,40 +83,6 @@ function addWorkouts(workoutName, exercises) {
 }
 
 
-
-function addExercises(exerciseName, exerciseDetails) {
-    const exerciseHTML = `
-        <div class="exercise-section">
-            <h3>${formatCamelCase(exerciseName)}</h3>
-            <div class="grid-container">
-                <div class="exercise-header">
-                    <span class="header">Set</span>
-                    <span class="header">KG</span>
-                    <span class="header">REPS</span>
-                    <span></span>
-                </div>
-            </div>
-        </div>
-    `;
-
-    // Append the new exercise section
-    exerciseEl.innerHTML += exerciseHTML;
-
-    // Add sets dynamically
-    const gridContainer = exerciseEl.querySelector(".exercise-section:last-child .grid-container");
-    for (let i = 0; i < exerciseDetails.sets; i++) {
-        const setDetails = `
-            <div class="set">
-                <span class="row">${i + 1}</span>
-                <input type="number" min="0" value="${exerciseDetails['weight']}">
-                <input type="number" min="0" step="1" value="${exerciseDetails['reps']}">
-                <input type="checkbox" value="exercise-${i + 1}-done">
-            </div>
-        `;
-        gridContainer.innerHTML += setDetails;
-    }
-}
-
 function clearExercises() {
     exerciseEl.innerHTML = "";
 }
