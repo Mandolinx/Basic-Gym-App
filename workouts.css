@@ -6,7 +6,7 @@
 }
 
 .workout{
-    width: 90%;
+    width: 80%;
     border: 2px solid #d4d4d4;
     border-radius: 3px;
     margin: 10px 0;
@@ -14,3 +14,9 @@
     text-decoration: none; /* Remove underlines */
     color: inherit; /* Use the color of the parent element */
 }
+
+.workout p {
+    line-height: 0.5;
+    font-size: 0.9rem;
+}
+

@@ -1,6 +1,10 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+import * as workoutFuncs from "./firebaseFuncs.js";
 
+const exitButton = document.getElementById("exit-button");
+
+// fetches firebase database key link and initialises basic firebase variables
 fetch('firebase-key.json')
   .then(response => response.json())
   .then(data => {
@@ -12,7 +16,6 @@ fetch('firebase-key.json')
     const app = initializeApp(appSettings);
     const database = getDatabase(app);
     const workouts = ref(database, "workouts");
-
     setupListeners(workouts); // Set up Firebase listeners
   })
   .catch(error => console.error('Error loading config:', error));
@@ -33,18 +36,20 @@ function setupListeners(workouts) {
     onValue(workouts, (snapshot) => {
         if (snapshot.exists()) {
             const data = snapshot.val(); // Get the workouts array
-            const currentWorkout = data.workouts.find(workout => workout.name === selectedWorkout); // Find selected workout
+            // find selected workout
+            const currentWorkout = data.workouts.find(workout => workout.name === selectedWorkout); 
     
             if (!currentWorkout) {
                 console.error(`No data found for workout: ${selectedWorkout}`);
                 return;
             }
-    
+            
             console.log(`Exercises for ${selectedWorkout}:`, currentWorkout.exercises);
     
-            clearExercises(); // Clear any existing exercises in the UI
+            exerciseEl.innerHTML = "";
+            // render each exercise of the current workout stored in localStorage
             currentWorkout.exercises.forEach((exercise) => {
-                addExercises(exercise.name, exercise); // Add each exercise
+                workoutFuncs.addExercises(exercise.name, exercise); 
             });
         } else {
             console.log("No data found in database");
@@ -53,139 +58,6 @@ function setupListeners(workouts) {
     
 }   
 
-function formatCamelCase(str) {
-    const spacedString = str.replace(/([A-Z])/g, " $1");
-    return spacedString
-        .trim()
-        .split(" ")
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ");
-}
-
-const addExercises = (exerciseName, exerciseDetails) => {
-    const exerciseHTML = `
-        <div class="exercise-section">
-            <h3>${formatCamelCase(exerciseName)}</h3>
-            <div class="grid-container">
-                <div class="exercise-header">
-                    <span class="header">SET</span>
-                    <span class="header">PREVIOUS</span>
-                    <span class="header">KG</span>
-                    <span class="header">REPS</span>
-                    <span></span>
-                </div>
-            </div>
-            <button class="add-set">ADD SET</button>
-        </div>
-    `;
-
-    // Append the new exercise section
-    exerciseEl.insertAdjacentHTML('beforeend', exerciseHTML);
-
-    // Add sets dynamically to the latest exercise section
-    const exerciseSection = exerciseEl.querySelector(".exercise-section:last-child");
-    const gridContainer = exerciseSection.querySelector(".grid-container");
-    const addSetButton = exerciseSection.querySelector(".add-set");
-
-    // Populate initial sets
-    function populateSets(setAmount) {
-        for (let i = 0; i < setAmount; i++) {
-            const setDetails = `
-                <div class="set">
-                    <span class="set-num row">${i + 1}</span>
-                    <span class="row">${exerciseDetails['weight']}kg x ${exerciseDetails['reps']}</span>
-                    <input type="number" min="0" value="${exerciseDetails['weight']}">
-                    <input type="number" min="0" step="1" value="${exerciseDetails['reps']}">
-                    <input type="checkbox" value="exercise-${i + 1}-done">
-                </div>
-            `;
-            gridContainer.insertAdjacentHTML('beforeend', setDetails);
-        }
-    }
-    
-    // Initial population of sets
-    populateSets(exerciseDetails.sets);
-    
-    gridContainer.addEventListener("click", (e) => {
-        if (e.target.classList.contains("set-num")) {
-            // Find the clicked set
-            const clickedSet = e.target.closest(".set");
-    
-            // Remove the clicked set from the DOM
-            clickedSet.remove();
-    
-            // Update the ordering of the remaining sets
-            const remainingSets = gridContainer.querySelectorAll(".set");
-            remainingSets.forEach((set, index) => {
-                // Update the set-num value to reflect the new order
-                const setNumElement = set.querySelector(".set-num");
-                setNumElement.textContent = index + 1; // Reassign based on new index
-            });
-        }
-    });
-    
-
-    // Add event listener to the ADD SET button
-    addSetButton.addEventListener("click", () => {
-        // Count current sets in this specific exercise section
-        const currentSetCount = gridContainer.querySelectorAll(".set").length;
-
-        // Create a new set row
-        const newSetDetails = `
-            <div class="set">
-                <span class="set-num row">${currentSetCount + 1}</span>
-                <span class="row">${exerciseDetails['weight']}kg x ${exerciseDetails['reps']}</span>
-                <input type="number" min="0" value="${exerciseDetails['weight']}">
-                <input type="number" min="0" step="1" value="${exerciseDetails['reps']}">
-                <input type="checkbox" value="exercise-${currentSetCount + 1}-done">
-            </div>  
-        `;
-
-        // Append the new set to the grid container
-        gridContainer.insertAdjacentHTML('beforeend', newSetDetails);
-
-    });
-
-};
-
-// const update
-
-function clearExercises() {
-    exerciseEl.innerHTML = "";
-}
-
-function timer() {
-    const timerEl = document.querySelector(".top-bar p");
-    let sec = 0;
-    let minute = 0;
-    let hour = 0;
-
-    setInterval(() => {
-        sec += 1;
-
-        // Handle minute and hour increments
-        if (sec >= 60) {
-            sec = 0;
-            minute++;
-        }
-        if (minute >= 60) {
-            minute = 0;
-            hour++;
-        }
-        if (hour >= 99) {
-            return; // Stop the timer if hours exceed 99
-        }
-
-        // Format time to always show two digits
-        const formattedTime = [
-            hour.toString().padStart(2, '0'),
-            minute.toString().padStart(2, '0'),
-            sec.toString().padStart(2, '0')
-        ].join(':');
-
-        timerEl.textContent = formattedTime;
-    }, 1000);
-}
-
 // Start the timer
-timer();
+workoutFuncs.timer();
+
