@@ -35,9 +35,11 @@ function setupListeners(workouts) {
     
     onValue(workouts, (snapshot) => {
         if (snapshot.exists()) {
-            const data = snapshot.val(); // Get the workouts array
+            let data = snapshot.val(); // Get the workouts array
+            data = Object.values(data)
+
             // find selected workout
-            const currentWorkout = data.workouts.find(workout => workout.name === selectedWorkout); 
+            const currentWorkout = data.find(workout => workout.name === selectedWorkout); 
     
             if (!currentWorkout) {
                 console.error(`No data found for workout: ${selectedWorkout}`);

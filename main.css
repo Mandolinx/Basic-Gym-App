@@ -4,6 +4,7 @@
     --light-blue: #86cbfc;
     --grey: #5e5e5e;
     --light-grey: #cfcfcf;
+    --danger: #bd554d;
 }
 
 /* Global Styles */
@@ -95,7 +96,7 @@ a{
 }
 
 .set-num:hover {
-    background-color: #bd554d;
+    background-color: var(--danger);
     color: white;
 }
 
@@ -214,31 +215,40 @@ button {
     color: var(--blue);
     text-align: center;
     background-color: white;
-    border: 3px solid var(--blue);
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-button.add-set {
-    all: unset; /* Reset inherited styles */
-    display: block;
-    margin: 10px auto;
-    padding: 10px 20px;
-    font-size: 16px;
-    font-weight: 500;
-    color: var(--blue);
-    text-align: center;
-    background-color: white;
     border: 1px solid var(--blue);
     cursor: pointer;
     border-radius: 5px;
 }
+
 
 #add-workout-btn{
     border-radius: 50%;
     aspect-ratio: 1/1;
     border: 1px solid var(--blue);
 }
+
+.removal-exercise{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    padding: 0 20px
+}
+.exercise-section .removal-exercise > *{
+    margin: 0;  
+    height: 100%;
+    display: block;
+}
+
+button.removal {
+    border: 0;
+}
+button.removal:hover{
+    background-color: var(--danger);
+    color: white;
+}
+
+
 
 /* Template */
 .template {

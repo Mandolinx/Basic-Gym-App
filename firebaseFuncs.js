@@ -7,10 +7,31 @@ export function formatCamelCase(str) {
         .join(" ");
 }
 
-export const addExercises = (exerciseName, exerciseDetails) => {
-    console.log(exerciseDetails);
+export const exerciseHeader = (exerciseName, exerciseDetails, removal = false) => {
     const exerciseEl = document.querySelector(".exercise");
-    const exerciseHTML = `
+    let exerciseHTML;
+    if (removal){
+        exerciseHTML = `
+            <div class="exercise-section">
+                <div class="removal-exercise">
+                <h3>${formatCamelCase(exerciseName)}</h3>
+                <button class="removal">X</button>
+                </div>
+                <div class="grid-container">
+                    <div class="exercise-header">
+                        <span class="header">SET</span>
+                        <span class="header">PREVIOUS</span>
+                        <span class="header">KG</span>
+                        <span class="header">REPS</span>
+                        <span></span>
+                    </div>
+                </div>
+                <button class="add-set">ADD SET</button>
+            </div>
+        `;
+    }
+    else{
+        exerciseHTML = `
         <div class="exercise-section">
             <h3>${formatCamelCase(exerciseName)}</h3>
             <div class="grid-container">
@@ -25,6 +46,14 @@ export const addExercises = (exerciseName, exerciseDetails) => {
             <button class="add-set">ADD SET</button>
         </div>
     `;
+    }
+    return exerciseHTML 
+}
+ 
+export const addExercises = (exerciseName, exerciseDetails, removal=false) => {
+    console.log(exerciseDetails);
+    const exerciseEl = document.querySelector(".exercise");
+    const exerciseHTML = exerciseHeader(exerciseName, exerciseDetails, removal);
 
     // Append the new exercise section
     exerciseEl.insertAdjacentHTML('beforeend', exerciseHTML);
@@ -50,6 +79,8 @@ export const addExercises = (exerciseName, exerciseDetails) => {
         }
     }
     
+
+
     // Initial population of sets
     populateSets(exerciseDetails.sets);
     
@@ -69,8 +100,15 @@ export const addExercises = (exerciseName, exerciseDetails) => {
                 setNumElement.textContent = index + 1; // Reassign based on new index
             });
         }
-    });
+        });
     
+    if (removal){
+        const removalButton = exerciseEl.querySelector(".exercise-section:last-child .removal");
+        removalButton.addEventListener("click", (e) => {
+            exerciseSection.remove();
+        })
+    }
+
 
     // Add event listener to the ADD SET button
     addSetButton.addEventListener("click", () => {
@@ -93,7 +131,8 @@ export const addExercises = (exerciseName, exerciseDetails) => {
 
     });
 
-};
+}
+
 
 
 export function addWorkouts(workoutName, exercises) {
