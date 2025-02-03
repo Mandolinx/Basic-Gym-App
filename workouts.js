@@ -51,7 +51,7 @@ function setupListeners(workouts) {
             templateEl.style.display = "flex";
         }
         else {
-            let exercises = getWorkoutData();
+            let exercises = workoutFuncs.getWorkoutData();
             const fetchedWorkout = {
                 "exercises": exercises,
                 "name": workoutName
@@ -94,36 +94,7 @@ addWorkoutBtn.addEventListener("click", () => {
 
 const addNewWorkoutEl = document.getElementById("add-new-workout");
 
-function getWorkoutData() {
-    const exerciseSections = document.querySelectorAll(".exercise-section");
-    const exercises = [];
 
-    exerciseSections.forEach((section) => {
-        const exerciseName = section.querySelector("h3").textContent.trim();
-
-        const sets = [];
-        const setElements = section.querySelectorAll(".set");
-        setElements.forEach((setEl) => {
-            const weight = setEl.querySelector("input[type='number']").value;
-            const reps = setEl.querySelectorAll("input[type='number']")[1].value;
-            sets.push({
-                weight: parseFloat(weight),
-                reps: parseInt(reps),
-            });
-        });
-
-        if (sets.length > 0) {
-            exercises.push({
-                name: exerciseName.replace(/\s/g, ""), // Convert to camelCase format
-                sets: sets.length,
-                weight: sets[0].weight, // Assuming first set weight is standard
-                reps: sets[0].reps, // Assuming first set reps is standard
-            });
-        }
-    });
-
-    return exercises;
-}
 
 
 

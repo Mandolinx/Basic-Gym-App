@@ -170,6 +170,49 @@ export function addWorkouts(workoutName, exercises) {
     });
 }
 
+export function areExercisesEqual(arr1, arr2) {
+    if (arr1.length !== arr2.length) return false;
+
+    return arr1.every((exercise, index) => {
+        const otherExercise = arr2[index];
+        return exercise.name === otherExercise.name &&
+               exercise.reps === otherExercise.reps &&
+               exercise.sets === otherExercise.sets &&
+               exercise.weight === otherExercise.weight;
+    });
+}
+
+export function getWorkoutData() {
+    const exerciseSections = document.querySelectorAll(".exercise-section");
+    const exercises = [];
+
+    exerciseSections.forEach((section) => {
+        const exerciseName = section.querySelector("h3").textContent.trim();
+
+        const sets = [];
+        const setElements = section.querySelectorAll(".set");
+        setElements.forEach((setEl) => {
+            const weight = setEl.querySelector("input[type='number']").value;
+            const reps = setEl.querySelectorAll("input[type='number']")[1].value;
+            sets.push({
+                weight: parseFloat(weight),
+                reps: parseInt(reps),
+            });
+        });
+
+        if (sets.length > 0) {
+            exercises.push({
+                name: exerciseName.replace(/\s/g, ""), // Convert to camelCase format
+                sets: sets.length,
+                weight: sets[0].weight, // Assuming first set weight is standard
+                reps: sets[0].reps, // Assuming first set reps is standard
+            });
+        }
+    });
+
+    return exercises;
+}
+
 // const update
 
 export function timer() {

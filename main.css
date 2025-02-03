@@ -5,6 +5,7 @@
     --grey: #5e5e5e;
     --light-grey: #cfcfcf;
     --danger: #bd554d;
+    --success: #5df04d;
 }
 
 /* Global Styles */
@@ -85,10 +86,10 @@ a{
     display: grid;
     grid-template-columns: 0.5fr 2fr 1fr 1fr 1fr; /* Define column sizes */
     margin: 30px 10px;
-    gap: 10px;
     text-align: center;
     align-items: center; /* Vertically align content within the cells */
     padding: 10px 0;
+    column-gap: 10px;
 }
 
 .set {
@@ -109,6 +110,7 @@ a{
     line-height: 2rem;
     font-size: 14px;
     color: var(--grey);
+    padding: 10px 0;
 }
 
 /* Input Fields */
@@ -145,8 +147,9 @@ input[type="checkbox"] {
 }
 
 input[type="checkbox"]:checked {
-    background-color: var(--blue); /* Change background when checked */
-    box-shadow: 0 0 0 2px var(--light-blue); /* Optional: Add a highlight effect */
+    background-color: var(--success); /* Change background when checked */
+    box-shadow: 0 0 0 2px #aaffa1; /* Optional: Add a highlight effect */
+    
 }
 
 .new-exercise{
@@ -248,10 +251,45 @@ button.removal:hover{
     color: white;
 }
 
+#updated-workout{
+    position: absolute;    
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    border: 1px solid var(--blue);
+    width: 70%; /* This now applies to .main, not the full screen */
+    max-width: 350px; /* Prevents it from exceeding the main container */}
+
+#updated-workout p {
+    margin-top: 10px;   
+}
+
+#close-update-workout{
+    width: 100%;
+    text-align: center;
+    background-color: var(--danger);
+    padding: 10px 0;
+}
+
+
+#update-buttons{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+
 
 
 /* Template */
 .template {
     color: var(--grey);
     cursor: pointer;
+}
+
+.template .workout:hover{
+    background-color: var(--light-blue);
 }
